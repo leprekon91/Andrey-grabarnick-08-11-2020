@@ -26,18 +26,6 @@ class User(UserMixin, db.Model):
         unique=False,
         nullable=False
     )
-    created_on = db.Column(
-        db.DateTime,
-        index=False,
-        unique=False,
-        nullable=True
-    )
-    last_login = db.Column(
-        db.DateTime,
-        index=False,
-        unique=False,
-        nullable=True
-    )
 
     def set_password(self, password):
         """Create hashed password."""
@@ -49,6 +37,11 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         """Check hashed password."""
         return check_password_hash(self.password, password)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
