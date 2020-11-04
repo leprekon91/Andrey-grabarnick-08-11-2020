@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object('config.DevelopmentConfig')
+    app.config.from_object(os.environ['APP_SETTINGS'])
 
     # db.init_app(app)
 
