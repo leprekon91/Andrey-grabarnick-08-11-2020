@@ -1,9 +1,12 @@
 import os
 from flask import Flask
+from flask_login import LoginManager
 from flask_migrate import Migrate
 from server.models import db
 
 migrate = Migrate()
+login_manager = LoginManager()
+
 
 def create_app():
     app = Flask(__name__)
@@ -11,6 +14,7 @@ def create_app():
     
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
     # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
