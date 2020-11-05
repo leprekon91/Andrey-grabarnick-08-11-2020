@@ -11,7 +11,7 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(os.environ['APP_SETTINGS'])
-    
+    # print(app.config)
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)

@@ -1,7 +1,8 @@
 from flask import Blueprint, redirect, url_for, request, flash
 from flask_login import login_required, logout_user, current_user, login_user
-from .models.users import User
+
 from . import db, login_manager
+from .models.users import User
 
 auth = Blueprint('auth', __name__)
 
@@ -41,11 +42,10 @@ def signup_post():
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
     new_user = User(email=email, username=username)
-    print(new_user)
     new_user.set_password(password)
     # add the new user to the database
     new_user.save()
-    login_user(user)  # Log in as newly created user
+    # login_user(user)  # Log in as newly created user
     return {"name": current_user.username}
 
 @auth.route("/api/logout")
