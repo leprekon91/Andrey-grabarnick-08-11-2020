@@ -8,12 +8,12 @@ class Message(db.Model):
         db.Integer,
         primary_key=True
     )
-    sender = db.Column(  # user email
+    sender = db.Column(
         db.String(100),
         nullable=False,
         unique=False
     )
-    receiver = db.Column(  # user email
+    receiver = db.Column(
         db.String(100),
         nullable=False,
         unique=False

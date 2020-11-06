@@ -1,9 +1,6 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
-from sqlalchemy import or_
 
-from . import db
-from .models.users import User
 from .models.messages import Message
 
 main = Blueprint('main', __name__)
@@ -11,8 +8,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-
-    return "Hello"
+    return app.send_static_file('index.html')
 
 
 @main.route('/api/send', methods=['POST'])
@@ -91,7 +87,7 @@ def delete_message():
     form = request.get_json()
     receiver = current_user.email
     message_id = form['message_id']
-    message = Message.query.filter(
+    Message.query.filter(
         (Message.receiver == receiver) &
         (Message.id == message_id)
     ).delete()

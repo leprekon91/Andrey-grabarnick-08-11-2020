@@ -9,7 +9,7 @@ login_manager = LoginManager()
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='./view/build', static_url_path='/')
     app.config.from_object(os.environ['APP_SETTINGS'])
     # print(app.config)
     db.init_app(app)
