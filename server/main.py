@@ -6,11 +6,6 @@ from .models.messages import Message
 main = Blueprint('main', __name__)
 
 
-@main.route('/')
-def index():
-    return app.send_static_file('index.html')
-
-
 @main.route('/api/send', methods=['POST'])
 @login_required
 def sendMessage():
