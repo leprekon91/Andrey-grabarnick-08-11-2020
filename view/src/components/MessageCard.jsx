@@ -9,9 +9,18 @@ import Avatar from '@material-ui/core/Avatar';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import DoneIcon from '@material-ui/icons/Done';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import Typography from '@material-ui/core/Typography';
 
 function MessageCard({ message, type }) {
-  const { title, body, sender, received, seen } = message;
+  const {
+    title,
+    body,
+    sender,
+    receiver,
+    received,
+    seen,
+    sentAt,
+  } = message;
   let icon = <AccessTimeIcon color="action" />;
   if (received) {
     icon = <DoneIcon color="secondary" />;
@@ -24,11 +33,21 @@ function MessageCard({ message, type }) {
     <div>
       <Card>
         <CardHeader
-          avatar={<Avatar aria-label="status" style={{backgroundColor:'#efefef'}}>{icon}</Avatar>}
+          avatar={
+            // eslint-disable-next-line react/jsx-wrap-multilines
+            <Avatar aria-label="status" style={{ backgroundColor: '#efefef' }}>
+              {icon}
+            </Avatar>
+          }
           title={title}
-          subheader={`from: ${sender}`}
+          subheader={type === 'inbox' ? `from:${sender}` : `to:${receiver}`}
         />
-        <CardContent>{body}</CardContent>
+        <CardContent>
+          <Typography variant="subtitle2" color="initial">
+            Sent at {sentAt&&new Date(sentAt).toLocaleString()}
+          </Typography>
+          {body}
+        </CardContent>
       </Card>
       {JSON.stringify({ message, type })}
     </div>

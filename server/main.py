@@ -14,11 +14,13 @@ def sendMessage():
     receiver = form['toEmail']
     title = form['title']
     body = form['body']
+    sent_at = form['sentAt']
     new_message = Message(
         sender=sender,
         receiver=receiver,
         title=title,
-        body=body
+        body=body,
+        sent_at=sent_at
     )
     new_message.save()
     return "Sent successfully"
@@ -52,7 +54,7 @@ def get_sent_messages(page_):
 
     email = current_user.email
 
-    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 5)
+    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 2)
 
     return {
         "data": [e.serialize() for e in messages.items],

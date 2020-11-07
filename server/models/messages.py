@@ -38,6 +38,7 @@ class Message(db.Model):
         default=False,
         nullable=False
     )
+    sent_at = db.Column(db.String())
 
     def receive(self):
         self.received = True
@@ -60,7 +61,8 @@ class Message(db.Model):
             'title': self.title,
             'body': self.body,
             'received': self.received,
-            'seen': self.seen
+            'seen': self.seen,
+            'sentAt': self.sent_at
         }
 
     def __repr__(self):

@@ -20,7 +20,7 @@ function Compose() {
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    Axios.post('/api/send', { toEmail, title, body })
+    Axios.post('/api/send', { toEmail, title, body,sentAt:new Date().toISOString() })
       .then(() => {
         setLoading(false);
         alert('Message sent!');
