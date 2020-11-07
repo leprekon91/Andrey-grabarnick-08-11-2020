@@ -1,6 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import './App.css';
+import 'fontsource-roboto';
+
+import Home from './components/Home.jsx';
+import Inbox from './components/Inbox.jsx';
+import Sent from './components/Sent.jsx';
 import TopBar from './components/TopBar.jsx';
+import Authenticated from './components/Authenticated.jsx';
+import Login from './components/Login.jsx';
+import Signup from './components/Signup.jsx';
 
 export default function App() {
   return (
@@ -11,29 +20,19 @@ export default function App() {
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/">
+          <Route path="/" exact>
             <Home />
+          </Route>
+          <Authenticated path="/inbox" component={() => <Inbox />} />
+          <Authenticated path="/sent" component={() => <Sent />} />
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/Signup">
+            <Signup />
           </Route>
         </Switch>
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }

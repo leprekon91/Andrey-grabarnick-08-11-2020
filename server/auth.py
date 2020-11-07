@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, request, flash
+from flask import Blueprint,jsonify, redirect, url_for, request, flash
 from flask_login import login_required, logout_user, current_user, login_user
 
 from . import db, login_manager
@@ -47,6 +47,11 @@ def signup_post():
     new_user.save()
     # login_user(user)  # Log in as newly created user
     return {"name": current_user.username}
+
+@auth.route('/api/me')
+def getUser():
+    return jsonify(isLoggedIn=current_user.is_authenticated)
+
 
 @auth.route("/api/logout")
 @login_required
