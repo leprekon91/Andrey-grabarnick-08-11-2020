@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -9,6 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import Axios from 'axios';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Compose() {
   const [toEmail, settoEmail] = useState('');
@@ -26,12 +28,9 @@ function Compose() {
         settitle('');
         setbody('');
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setLoading(false);
-        alert(
-          ''
-        );
+        alert('Error sending message!');
       });
   };
   return (
@@ -79,7 +78,13 @@ function Compose() {
               startIcon={<SendIcon />}
               fullWidth
             >
-              SEND
+              {loading ? (
+                <>
+                  <CircularProgress size={24} color="inherit" />
+                </>
+              ) : (
+                'Send'
+              )}
             </Button>
           </CardActions>
         </form>

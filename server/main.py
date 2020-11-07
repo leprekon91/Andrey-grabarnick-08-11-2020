@@ -46,6 +46,25 @@ def get_all_messages(page_):
     }
 
 
+@main.route('/api/getsent/<page_>')
+@login_required
+def get_sent_messages(page_):
+
+    email = current_user.email
+
+    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 5)
+
+    return {
+        "data": [e.serialize() for e in messages.items],
+        "page": messages.page,
+        "pages": messages.pages,
+        "total": messages.total,
+        "hasPrev": messages.has_prev,
+        "nextNum": messages.next_num,
+        "hasNext": messages.has_next,
+    }
+
+
 @main.route('/api/receive', methods=['POST'])
 @login_required
 def receive_message():
@@ -61,6 +80,7 @@ def receive_message():
         return "Message received"
     return "Error receiving message id:" + str(message_id)
 
+
 @main.route('/api/see', methods=['POST'])
 @login_required
 def see_message():
@@ -75,6 +95,7 @@ def see_message():
         message.see()
         return "Message seen"
     return "Error receiving message id:" + str(message_id)
+
 
 @main.route('/api/delete', methods=['POST'])
 @login_required
