@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import Axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
@@ -6,18 +8,16 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Copyright from './Copyright.jsx';
-import useAuthStyles from './utils/useAuthStyles.jsx';
+import Copyright from '../Copyright.jsx';
+import useAuthStyles from '../utils/useAuthStyles.jsx';
 
-export default function Login() {
+export default function Login({ onLogin }) {
   const classes = useAuthStyles();
   const [loading, setLoading] = useState(false);
   const [username, setusername] = useState('');
@@ -32,6 +32,7 @@ export default function Login() {
       .then(() => {
         setLoading(false);
         setloggedIn(true);
+        onLogin();
       })
       .catch(() => {
         setLoading(false);
@@ -40,7 +41,7 @@ export default function Login() {
     // DONE
   };
   if (loggedIn) {
-    return <Redirect to="/" />;
+    return <Redirect to="/inbox" />;
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -50,7 +51,7 @@ export default function Login() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign In
         </Typography>
         <form className={classes.form} onSubmit={onSubmit} noValidate>
           <TextField
@@ -97,13 +98,6 @@ export default function Login() {
               'Sign In'
             )}
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                Don&apos;t have an account? Sign Up
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>
@@ -112,3 +106,6 @@ export default function Login() {
     </Container>
   );
 }
+
+Login.propTypes = { onLogin: PropTypes.func };
+Login.defaultProps = { onLogin: () => {} };

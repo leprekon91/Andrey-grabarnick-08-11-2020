@@ -8,8 +8,8 @@ import Inbox from './components/Inbox.jsx';
 import Sent from './components/Sent.jsx';
 import TopBar from './components/TopBar.jsx';
 import Authenticated from './components/Authenticated.jsx';
-import Login from './components/Login.jsx';
-import Signup from './components/Signup.jsx';
+import Login from './components/accounts/Login.jsx';
+import Signup from './components/accounts/Signup.jsx';
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ export default function App() {
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/Signup">
+          <Route path="/signup">
             <Signup />
           </Route>
         </Switch>

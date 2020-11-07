@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify, redirect, url_for, request, flash
+from flask import Blueprint,jsonify, redirect, url_for, request
 from flask_login import login_required, logout_user, current_user, login_user
 
 from . import db, login_manager
@@ -37,15 +37,14 @@ def signup_post():
     user = User.query.filter_by(email=email).first() 
 
     if user:
-        flash("User already exists!")
-        return "User already exists!"
+        raise Exception("User already exists!")
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
     new_user = User(email=email, username=username)
     new_user.set_password(password)
     # add the new user to the database
     new_user.save()
-    # login_user(user)  # Log in as newly created user
+    login_user(new_user)  # Log in as newly created user
     return {"name": current_user.username}
 
 @auth.route('/api/me')

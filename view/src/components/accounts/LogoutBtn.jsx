@@ -6,13 +6,16 @@ import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import LockIcon from '@material-ui/icons/Lock';
 
-function LogoutBtn({ loggedIn }) {
+function LogoutBtn({ logout }) {
   const [loggedOut, setloggedOut] = React.useState(false);
   const onClick = (e) => {
     e.preventDefault();
-    axios('/api/logout').then(() => setloggedOut(true));
+    axios('/api/logout').then(() => {
+      setloggedOut(true);
+      logout();
+    });
   };
-  if (!loggedIn) return null;
+
   if (loggedOut) {
     return <Redirect to="/" />;
   }
@@ -23,6 +26,6 @@ function LogoutBtn({ loggedIn }) {
   );
 }
 
-LogoutBtn.propTypes = { loggedIn: PropTypes.bool.isRequired };
+LogoutBtn.propTypes = { logout: PropTypes.func.isRequired };
 
 export default LogoutBtn;

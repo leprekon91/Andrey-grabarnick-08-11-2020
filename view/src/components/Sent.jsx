@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Sent() {
-  return <div>Sent</div>;
+  return <div>Sent - sent messages</div>;
 }
 
 export default Sent;
