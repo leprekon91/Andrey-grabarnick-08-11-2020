@@ -16,7 +16,7 @@ function Searchbar({ query, setQuery }) {
       color="primary"
       fullWidth
       size="medium"
-      autofocus
+      autoFocus
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
