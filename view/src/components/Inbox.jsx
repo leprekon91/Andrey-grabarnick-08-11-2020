@@ -6,7 +6,6 @@ import Pagination from '@material-ui/lab/Pagination';
 
 import MessageCard from './MessageCard.jsx';
 import NoMessages from './utils/NoMessages.jsx';
-import Searchbar from './Searchbar.jsx';
 
 function Inbox() {
   const [messages, setmessages] = useState([]);
