@@ -13,6 +13,7 @@ import SendIcon from '@material-ui/icons/Send';
 import LogoutBtn from './accounts/LogoutBtn.jsx';
 import LoginBtn from './accounts/LoginBtn.jsx';
 import SignupBtn from './accounts/SignupBtn.jsx';
+import DefaultAvatar from './utils/DefaultAvatar.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,9 +30,15 @@ const useStyles = makeStyles((theme) => ({
 export default function TopBar() {
   const classes = useStyles();
   const [loggedIn, setloggedIn] = React.useState(false);
+  const [username, setusername] = React.useState('');
 
   React.useEffect(async () => {
-    Axios('/api/me').then((res) => setloggedIn(res.data.isLoggedIn));
+    Axios('/api/me').then((res) => {
+      setloggedIn(res.data.isLoggedIn);
+      if (res.data.isLoggedIn) {
+        setusername(res.data.username);
+      }
+    });
   });
 
   return (
@@ -69,6 +76,7 @@ export default function TopBar() {
               >
                 Sent
               </Button>
+              {username && <DefaultAvatar name={username} />}
               <LogoutBtn
                 logout={() => {
                   setloggedIn(false);

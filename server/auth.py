@@ -54,7 +54,11 @@ def signup_post():
 @auth.route('/api/me')
 def getUser():
     if current_user.is_authenticated:
-        return jsonify(isLoggedIn=current_user.is_authenticated, email=current_user.email)
+        return jsonify(
+            isLoggedIn=current_user.is_authenticated,
+            email=current_user.email,
+            username=current_user.username
+            )
     return jsonify(isLoggedIn=current_user.is_authenticated)
 
 

@@ -13,7 +13,7 @@ function NoMessages() {
       <Typography variant="h1" color="primary">
         No Messages Here!
       </Typography>
-      <Typography variant="h4" color="default">
+      <Typography variant="h4">
         Send a messsage through the <i>Compose</i> button on the bottom!
       </Typography>
     </Grid>

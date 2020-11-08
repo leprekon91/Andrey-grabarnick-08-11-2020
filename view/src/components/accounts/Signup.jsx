@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
+import { colors } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +14,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Skeleton from '@material-ui/lab/Skeleton';
 
+import { strengthColor, strengthIndicator, strengthLabel } from '../utils/pwdStr.js';
 import Copyright from '../Copyright.jsx';
 import useAuthStyles from '../utils/useAuthStyles.jsx';
 
@@ -36,8 +39,7 @@ function Signup({ onSignup }) {
         setloggedIn(true);
         onSignup();
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setLoading(false);
         seterrorMessage('Signup failed. You probably already have a user with that email...');
       });
@@ -68,6 +70,11 @@ function Signup({ onSignup }) {
             autoComplete="username"
             value={username}
             onChange={(e) => setusername(e.target.value)}
+            inputProps={{
+              minLength: 3,
+              maxLength: 25,
+              pattern: '[a-zA-Z0-9]+',
+            }}
             autoFocus
           />
           <TextField
@@ -94,7 +101,34 @@ function Signup({ onSignup }) {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setpassword(e.target.value)}
+            inputProps={{
+              minLength: 7,
+              maxLength: 15,
+            }}
           />
+          {password.length > 0 && (
+            <>
+              <Skeleton
+                variant='rect'
+                animation={false}
+                height={8}
+                style={{
+                  backgroundColor:
+                    colors[strengthColor(strengthIndicator(password))]['500'],
+                  borderRadius: 15,
+                }}
+              />
+              <Typography
+                variant='body2'
+                style={{
+                  color:
+                    colors[strengthColor(strengthIndicator(password))]['500'],
+                }}
+              >
+                {strengthLabel(strengthIndicator(password))}
+              </Typography>
+            </>
+          )}
           <TextField
             variant="outlined"
             margin="normal"
@@ -107,6 +141,10 @@ function Signup({ onSignup }) {
             autoComplete="current-password"
             value={confirm}
             onChange={(e) => setconfirm(e.target.value)}
+            inputProps={{
+              minLength: 7,
+              maxLength: 15,
+            }}
           />
           <Typography variant="body1" color="error">
             {errorMessage}

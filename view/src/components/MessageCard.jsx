@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { colors } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import DoneIcon from '@material-ui/icons/Done';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import DoneIcon from '@material-ui/icons/Done';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Axios from 'axios';
 
 import DelMessageBtn from './utils/DelMessageBtn.jsx';
@@ -41,6 +42,11 @@ function MessageCard({ message, type, onUpdate }) {
   return (
     <>
       <ListItem
+        style={{
+          borderLeft: `5px solid ${
+            colors[type === 'inbox' ? 'red' : 'blue'][500]
+          }`,
+        }}
         button
         onClick={() => {
           setOpen(true);

@@ -7,12 +7,14 @@ import {
   Paper,
   List,
   LinearProgress,
+  Typography
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 
 import Landing from './Landing.jsx';
 import Searchbar from './Searchbar.jsx';
 import MessageCard from './MessageCard.jsx';
+import NoMessages from './utils/NoMessages.jsx';
 
 function Home() {
   const [loggedIn, setloggedIn] = useState(false);
@@ -56,28 +58,37 @@ function Home() {
   if (!loggedIn) {
     return <Landing />;
   }
+  if (messages.length === 0 && query === '') {
+    return <NoMessages />;
+  }
   return (
     <Box m={1}>
       <Searchbar query={query} setQuery={setQuery} />
       <Paper>
-        <List>
-          {messages.map((m) => (
-            <MessageCard
-              key={m.id}
-              message={m}
-              type={m.receiver === email ? 'inbox' : 'sent'}
-            />
-          ))}
-        </List>
-        <Divider />
-        {maxPages > 1 && (
-          <Grid container direction="row" justify="center">
-            <Pagination
-              count={maxPages}
-              page={page}
-              onChange={(e, v) => setPage(v)}
-            />
-          </Grid>
+        {messages.length > 0 ? (
+          <>
+            <List>
+              {messages.map((m) => (
+                <MessageCard
+                  key={m.id}
+                  message={m}
+                  type={m.receiver === email ? 'inbox' : 'sent'}
+                />
+              ))}
+            </List>
+            <Divider />
+            {maxPages > 1 && (
+              <Grid container direction="row" justify="center">
+                <Pagination
+                  count={maxPages}
+                  page={page}
+                  onChange={(e, v) => setPage(v)}
+                />
+              </Grid>
+            )}
+          </>
+        ) : (
+          <Typography variant="h6" color="initial">No Messages Found...</Typography>
         )}
       </Paper>
     </Box>
