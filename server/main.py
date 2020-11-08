@@ -53,8 +53,7 @@ def get_all_messages(page_):
 def get_sent_messages(page_):
 
     email = current_user.email
-
-    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 2)
+    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 5)
 
     return {
         "data": [e.serialize() for e in messages.items],
@@ -66,6 +65,23 @@ def get_sent_messages(page_):
         "hasNext": messages.has_next,
     }
 
+@main.route('/api/getinbox/<page_>')
+@login_required
+def get_inbox_messages(page_):
+
+    email = current_user.email
+
+    messages = Message.query.filter(Message.receiver == email).paginate(int(page_), 5)
+
+    return {
+        "data": [e.serialize() for e in messages.items],
+        "page": messages.page,
+        "pages": messages.pages,
+        "total": messages.total,
+        "hasPrev": messages.has_prev,
+        "nextNum": messages.next_num,
+        "hasNext": messages.has_next,
+    }
 
 @main.route('/api/receive', methods=['POST'])
 @login_required
