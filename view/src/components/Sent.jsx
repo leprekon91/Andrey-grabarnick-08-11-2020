@@ -4,7 +4,7 @@ import { Box, Divider, Grid, List, Paper } from '@material-ui/core';
 import Axios from 'axios';
 import Pagination from '@material-ui/lab/Pagination';
 import MessageCard from './MessageCard.jsx';
-import Searchbar from './Searchbar.jsx';
+import NoMessages from './utils/NoMessages.jsx';
 
 function Sent() {
   const [messages, setmessages] = useState([]);
@@ -18,10 +18,12 @@ function Sent() {
         setMaxPages(res.data.pages);
       })
       .catch(alert);
-  }, [page]);
+  }, [page, messages.length]);
+  if (messages.length === 0) {
+    return <NoMessages />;
+  }
   return (
     <Box m={1}>
-      <Searchbar />
       <Typography variant="h4" color="initial">
         Sent
       </Typography>
@@ -30,7 +32,11 @@ function Sent() {
       <Paper>
         <List>
           {messages.map((m) => (
-            <MessageCard message={m} type="sent" />
+            <MessageCard
+              key={m.id}
+              message={m}
+              type="sent"
+            />
           ))}
         </List>
         <Divider />

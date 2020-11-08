@@ -16,7 +16,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Axios from 'axios';
 
-function MessageCard({ message, type }) {
+import DelMessageBtn from './utils/DelMessageBtn.jsx';
+
+function MessageCard({ message, type, onUpdate }) {
   const [open, setOpen] = useState(false);
   const { id, title, sender, receiver, received, seen, body, sentAt } = message;
   React.useEffect(() => {
@@ -63,6 +65,15 @@ function MessageCard({ message, type }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+          {type === 'inbox' && (
+            <DelMessageBtn
+              msgId={id}
+              onDelete={() => {
+                setOpen(false);
+                onUpdate();
+              }}
+            />
+          )}
           <Button onClick={() => setOpen(false)} color="default">
             Close
           </Button>
@@ -75,6 +86,8 @@ function MessageCard({ message, type }) {
 MessageCard.propTypes = {
   message: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
+  onUpdate: PropTypes.func,
 };
+MessageCard.defaultProps = { onUpdate: () => {} };
 
 export default MessageCard;

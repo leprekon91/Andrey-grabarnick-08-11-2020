@@ -27,16 +27,24 @@ function Inbox() {
   }
   return (
     <Box m={1}>
-      <Searchbar />
       <Typography variant="h4" color="initial">
-        Sent
+        Inbox
       </Typography>
       <Divider />
       <br />
       <Paper>
         <List>
           {messages.map((m) => (
-            <MessageCard message={m} type="inbox" />
+            <MessageCard
+              key={m.id}
+              message={m}
+              type="inbox"
+              onUpdate={() => {
+                // message was deleted
+                const index = messages.indexOf((msg) => msg.id === m.id);
+                messages.splice(index, 1);
+              }}
+            />
           ))}
         </List>
         <Divider />

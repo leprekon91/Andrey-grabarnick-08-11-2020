@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify, redirect, url_for, request
+from flask import Blueprint, jsonify, redirect, url_for, request
 from flask_login import login_required, logout_user, current_user, login_user
 
 from . import db, login_manager
@@ -6,17 +6,20 @@ from .models.users import User
 
 auth = Blueprint('auth', __name__)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     if user_id is not None:
         return User.query.get(user_id)
     return None
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
     return {"error": "not authorized"}
 
-@auth.route('/api/login', methods=[ 'POST'])
+
+@auth.route('/api/login', methods=['POST'])
 def login():
     form = request.get_json()
     user = User.query.filter_by(username=form["username"]).first()
@@ -34,7 +37,7 @@ def signup_post():
     username = form['username']
     password = form['password']
 
-    user = User.query.filter_by(email=email).first() 
+    user = User.query.filter_by(email=email).first()
 
     if user:
         raise Exception("User already exists!")
@@ -47,8 +50,11 @@ def signup_post():
     login_user(new_user)  # Log in as newly created user
     return {"name": current_user.username}
 
+
 @auth.route('/api/me')
 def getUser():
+    if current_user.is_authenticated:
+        return jsonify(isLoggedIn=current_user.is_authenticated, email=current_user.email)
     return jsonify(isLoggedIn=current_user.is_authenticated)
 
 

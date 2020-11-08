@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required, current_user
-
+from sqlalchemy import literal, or_, and_
+from .models import db
 from .models.messages import Message
 
 main = Blueprint('main', __name__)
@@ -26,16 +27,24 @@ def sendMessage():
     return "Sent successfully"
 
 
-@main.route('/api/getall/<page_>')
+@main.route('/api/getall/<page_>/<query_>')
 @login_required
-def get_all_messages(page_):
-
+def get_all_messages(page_, query_):
+    print(query_)
     email = current_user.email
-
-    messages = Message.query.filter(
-        (Message.sender == email) |
-        (Message.receiver == email)
-    ).paginate(int(page_), 5)
+    if query_ != 'none':
+        messages = Message.query.filter(
+            Message.sender.contains(query_) |
+            Message.receiver.contains(query_),
+            (Message.sender == email) |
+            (Message.receiver == email)
+        ).paginate(int(page_), 5)
+        print(messages.items)
+    else:
+        messages = Message.query.filter(
+            (Message.sender == email) |
+            (Message.receiver == email)
+        ).paginate(int(page_), 5)
 
     return {
         "data": [e.serialize() for e in messages.items],
@@ -53,7 +62,8 @@ def get_all_messages(page_):
 def get_sent_messages(page_):
 
     email = current_user.email
-    messages = Message.query.filter(Message.sender == email).paginate(int(page_), 5)
+    messages = Message.query.filter(
+        Message.sender == email).paginate(int(page_), 5)
 
     return {
         "data": [e.serialize() for e in messages.items],
@@ -64,6 +74,7 @@ def get_sent_messages(page_):
         "nextNum": messages.next_num,
         "hasNext": messages.has_next,
     }
+
 
 @main.route('/api/getinbox/<page_>')
 @login_required
@@ -71,7 +82,8 @@ def get_inbox_messages(page_):
 
     email = current_user.email
 
-    messages = Message.query.filter(Message.receiver == email).paginate(int(page_), 5)
+    messages = Message.query.filter(
+        Message.receiver == email).paginate(int(page_), 5)
 
     return {
         "data": [e.serialize() for e in messages.items],
@@ -82,6 +94,7 @@ def get_inbox_messages(page_):
         "nextNum": messages.next_num,
         "hasNext": messages.has_next,
     }
+
 
 @main.route('/api/receive', methods=['POST'])
 @login_required
@@ -121,8 +134,12 @@ def delete_message():
     form = request.get_json()
     receiver = current_user.email
     message_id = form['message_id']
-    Message.query.filter(
-        (Message.receiver == receiver) &
-        (Message.id == message_id)
-    ).delete()
+    message = Message.query.filter(
+        Message.receiver == receiver,
+        Message.id == message_id
+    ).first()
+    if message:
+        db.session.delete(message)
+        db.session.commit()
+    print(str(message)+" to be deleted")
     return "message id:" + str(message_id)+" is DELETED"
