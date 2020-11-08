@@ -56,7 +56,7 @@ function MessageCard({ message, type, onUpdate }) {
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText
           primary={title}
-          secondary={type === 'inbox' ? `from:${sender}` : `to:${receiver}`}
+          secondary={`from: ${sender} - to: ${receiver}`}
         />
       </ListItem>
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="">

@@ -30,12 +30,14 @@ def sendMessage():
 @main.route('/api/getall/<page_>/<query_>')
 @login_required
 def get_all_messages(page_, query_):
-    print(query_)
+    
     email = current_user.email
     if query_ != 'none':
+        search_string = literal(query_)
+        print(search_string)
         messages = Message.query.filter(
-            Message.sender.contains(query_) |
-            Message.receiver.contains(query_),
+            Message.sender.contains(search_string) |
+            Message.receiver.contains(search_string),
             (Message.sender == email) |
             (Message.receiver == email)
         ).paginate(int(page_), 5)

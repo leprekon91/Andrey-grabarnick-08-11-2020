@@ -76,12 +76,12 @@ export default function TopBar() {
               >
                 Sent
               </Button>
-              {username && <DefaultAvatar name={username} />}
               <LogoutBtn
                 logout={() => {
                   setloggedIn(false);
                 }}
               />
+              {username && <DefaultAvatar name={username} />}
             </>
           ) : (
             <>
